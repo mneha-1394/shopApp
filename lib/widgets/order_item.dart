@@ -11,10 +11,10 @@ class OrderItem extends StatefulWidget {
    const OrderItem( {Key? key,required this.order}) : super(key: key);
 
   @override
-  _OrderItemState createState() => _OrderItemState();
+  OrderItemState createState() => OrderItemState();
 }
 
-class _OrderItemState extends State<OrderItem> {
+class OrderItemState extends State<OrderItem> {
   var _expanded = false;
 
   @override

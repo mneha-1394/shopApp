@@ -36,16 +36,17 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
              icon: const Icon(Icons.more_vert),
             itemBuilder: (_) => [
                   const PopupMenuItem(
-                      child: Text('Only Favourites'),
-                      value: FilterOptions.favourites),
+                      value: FilterOptions.favourites,
+                      child: Text('Only Favourites')),
                   const PopupMenuItem(
-                      child: Text('Show All'), value: FilterOptions.all)
+                      value: FilterOptions.all,
+                      child: Text('Show All'))
                 ]),
        Consumer<Cart>(
         builder:(_,cart,ch)=>
            Badge(
-              child:ch as Widget,
               value:cart.itemCount.toString() ,
+              child:ch as Widget,
                ),
               child: IconButton(
                   icon: const Icon(Icons.shopping_cart),
