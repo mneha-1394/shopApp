@@ -66,7 +66,7 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void addProduct(Product product) {
+  Future<void> addProduct (Product product) async {
       final url = Uri.https('shopapp-4d6ce-default-rtdb.firebaseio.com', '/products.json');
     http.post(url, body: json.encode({
       'title': product.title,
@@ -87,7 +87,7 @@ class Products with ChangeNotifier {
   // _items.insert(0, newProduct); // at the start of the list
     notifyListeners();
     },);
- 
+    
   }
 
   void updateProduct( var id, Product newProduct) {
@@ -103,5 +103,6 @@ class Products with ChangeNotifier {
   void deleteProduct(var id) {
     _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
+
   }
 }
