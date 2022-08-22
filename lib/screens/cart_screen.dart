@@ -37,19 +37,7 @@ class CartScreen extends StatelessWidget {
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-    primary: Theme.of(context).primaryColor),
-                    onPressed: () { 
-                      Provider.of<Orders>(context, listen: false).addOrder(
-                        cart.items.values.toList(),
-                        cart.totalAmount,
-                      );
-                      cart.clear();
-                    },
-                    child: const Text('ORDER NOW'),
-
-                  )
+                  OrderButton(cart: cart)
                 ],
               ),
             ),
@@ -59,16 +47,56 @@ class CartScreen extends StatelessWidget {
             child: ListView.builder(
               itemCount: cart.items.length,
               itemBuilder: (ctx, i) => CartItem(
-                   id: cart.items.values.toList()[i].id,
-                    price:cart.items.values.toList()[i].price,
-                    quantity:cart.items.values.toList()[i].quantity,
-                   title: cart.items.values.toList()[i].title,
-                    productId: cart.items.keys.toList()[i], 
-                  ),
+                id: cart.items.values.toList()[i].id,
+                price: cart.items.values.toList()[i].price,
+                quantity: cart.items.values.toList()[i].quantity,
+                title: cart.items.values.toList()[i].title,
+                productId: cart.items.keys.toList()[i],
+              ),
             ),
           )
         ],
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key? key,
+    required this.cart,
+  }) : super(key: key);
+
+  final Cart cart;
+
+  @override
+  State<OrderButton> createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var _isloading = false;
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(primary: Theme.of(context).primaryColor),
+      onPressed: widget.cart.totalAmount <= 0 || _isloading
+          ? null
+          : () async {
+              setState(() {
+                _isloading = true;
+              });
+              await Provider.of<Orders>(context, listen: false).addOrder(
+                widget.cart.items.values.toList(),
+                widget.cart.totalAmount,
+              );
+              setState(() {
+                _isloading = false;
+              });
+              widget.cart.clear();
+            },
+      child: _isloading
+          ? const CircularProgressIndicator()
+          : const Text('ORDER NOW'),
     );
   }
 }
